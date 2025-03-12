@@ -52,6 +52,7 @@ export default function Home() {
       setFormattedText(formatted);
       setError("");
     } catch (err) {
+      console.log(err);
       setError("Invalid JSON input");
       setFormattedText("");
     }

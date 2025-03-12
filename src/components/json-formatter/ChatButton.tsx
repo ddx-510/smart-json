@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { MessageCircle } from 'lucide-react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { generateJsonId } from '@/lib/utils';
 import { ChatHeader } from '@/components/json-formatter/chat/Chatheader';
 import { ChatMessages } from '@/components/json-formatter/chat/ChatMessages';
 import { ChatInput } from '@/components/json-formatter/chat/ChatInput';
