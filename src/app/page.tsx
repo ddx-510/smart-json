@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChatButton } from "@/components/json-formatter/ChatButton";
-import { createSnippet, updateSnippet, loadChatHistory, saveChatHistory, clearChatData, loadConversationId, saveConversationId } from "@/lib/db";
+import { createSnippet, updateSnippet, loadChatHistory, saveChatHistory, clearChatData, loadConversationId, saveConversationId, loadSnippets } from "@/lib/db";
 
 export default function Home() {
   const [unformattedText, setUnformattedText] = useState("");
@@ -26,6 +26,26 @@ export default function Home() {
   const [autoFormat, setAutoFormat] = useState(true);
   const [activeSnippetContent, setActiveSnippetContent] = useState<string | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  // Add this useEffect to load the latest snippet on mount
+  useEffect(() => {
+    const loadLatestSnippet = async () => {
+      try {
+        // Get all snippets from IndexDB using the imported loadSnippets function
+        const snippets = await loadSnippets();
+        if (snippets && snippets.length > 0) {
+          // Sort by updatedAt in descending order
+          const latestSnippet = snippets.sort((a, b) => b.updatedAt - a.updatedAt)[0];
+          // Load the latest snippet
+          handleLoadSnippet(latestSnippet.content, latestSnippet.id);
+        }
+      } catch (error) {
+        console.error("Failed to load latest snippet:", error);
+      }
+    };
+
+    loadLatestSnippet();
+  }, []); // Run only on mount
 
   // Format JSON when indentation changes or when text is updated (if autoFormat is enabled)
   useEffect(() => {
@@ -189,6 +209,25 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <Header />
           
+          {/* Add warning header for unsaved changes */}
+          {unformattedText.trim() && !activeSnippetId && (
+            <Card className="mb-4 border-yellow-500 bg-yellow-500/10">
+              <CardContent className="py-3 text-sm text-yellow-600 flex items-center justify-between">
+                <span>You have unsaved changes. Save them as a new snippet to keep them.</span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setIsNewSnippetDialogOpen(true);
+                    setIsUnsavedToSave(true);
+                  }}
+                >
+                  Save as New
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
           <div className="flex items-center justify-between mb-4">
             {activeSnippetId && (
               <Button

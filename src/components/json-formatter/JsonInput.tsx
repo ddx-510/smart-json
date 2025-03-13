@@ -61,16 +61,6 @@ export function JsonInput({
       <div className="flex items-center justify-between mb-2">
         <h3 className="font-medium">JSON Input</h3>
         <div className="flex items-center gap-2">
-          {!isActiveSnippet && unformattedText.trim() && (
-            <Button
-              onClick={onSaveAsNew}
-              size="sm"
-              className="h-8"
-            >
-              <Save className="h-4 w-4 mr-1" />
-              Save
-            </Button>
-          )}
           {!autoFormat && (
             <Button
               onClick={formatJSON}
