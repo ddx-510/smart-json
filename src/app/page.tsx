@@ -62,8 +62,8 @@ export default function Home() {
     setUnformattedText("");
     setFormattedText("");
     setError("");
-    setActiveSnippetId(null);
-    setActiveSnippetContent(null);
+    // setActiveSnippetId(null);
+    // setActiveSnippetContent(null);
   };
 
   const handleFormattedTextChange = (newText: string) => {
