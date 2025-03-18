@@ -1,6 +1,9 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeHighlight from 'rehype-highlight';
 
 interface ChatMessageDisplayProps {
   content: string;
@@ -26,7 +29,12 @@ export function ChatMessageDisplay({ content }: ChatMessageDisplayProps) {
       )}
       {actualMessage && (
         <div className="prose prose-slate dark:prose-invert prose-sm max-w-none animate-in fade-in-50 duration-300">
-          {actualMessage}
+          <ReactMarkdown 
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeHighlight]}
+          >
+            {actualMessage}
+          </ReactMarkdown>
         </div>
       )}
     </>
